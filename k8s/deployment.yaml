@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: cms-backend
+  name: cms-backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cms-backend
+  template:
+    metadata:
+      labels:
+        app: cms-backend
+    spec:
+      containers:
+        - image: image-registry.openshift-image-registry.svc:5000/macys-pipeline-dev/back-end-deployment
+          imagePullPolicy: Always
+          name: wagtail
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+            - containerPort: 9090
+              protocol: TCP
+          env:
+            - name: VOTING_API_SERVICE_HOST
+              value: cms-backend
+            - name: VOTING_API_SERVICE_PORT
+              value: "9000"
+     
